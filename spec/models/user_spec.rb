@@ -33,7 +33,7 @@ describe User do
 
 	describe "when email format is invalid" do
 		invalid_emails = %w[user@foo,com user_at_foo.org example.user@foo.
-		foo@bar_baz.com foo@bar+baz.com]
+		foo@bar_baz.com foo@bar+baz.com foo@bar..com]
 		invalid_emails.each do |invalid_email|
 			before { @user.email = invalid_email }
 			it { should_not be_valid }
@@ -87,4 +87,17 @@ describe User do
 			specify { expect(user_for_invalid_password).to be_false }
 		end
 	end
+
+##6.5.1
+	describe "email address with mixed case" do
+		let(:mixed_case_email) { "Foo@ExamPLe.com" }
+
+		it describe "should saved as all lower-case" do
+			@user.email = mixed_case_email
+			@user.save
+
+			expect(@user.reload.email).to eq mixed_case_email.downcase
+		end
+	end
+
 end
